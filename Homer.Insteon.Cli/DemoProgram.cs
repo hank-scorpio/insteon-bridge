@@ -1,36 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+using System;
 using System.Linq;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using System.Dynamic;
-using System.Linq.Expressions;
-using Homer.Insteon;
-using System.Threading;
 
-namespace InsteonBridge
+namespace Homer.Insteon.Cli
 {
-	public class Program
-	{
-        enum Kitchen
-        {
-            Island   = 0x1DBBE6,
-            Counter  = 0x1DD4A7,
-        }
-        static void Main(string[] args)
-        {
-            //MainAsync().Wait();
-            // StartHttp();
-            Main2();
-        }
 
-       
-        static async void Main3()
+    class DemoProgram
+    {
+        static async void Run()
         {
-    
-            
-            
             using (var c = new SmartLinc("insteon.home"))
             {
                 
@@ -54,27 +34,19 @@ namespace InsteonBridge
                 // Status is also updated as a result of set operations
                 Console.WriteLine($"Status: {await light.SetLevel(0.5)}");
          
-
-
                 await c.Run();
             }
 
             Console.Read();
 
         }
-
-
-
-        static void Main2()
+        static void Run2()
         {
-            var house = House.Load();
-
-            house.UpdateAll().Wait();
 
 
             // Create SmartLinc controller from endpoint tcp://insteon.lan:9761
 
-            // Hub hub = new Hub("insteon.home", "Cartwrig", "SkUOemxQ");
+            // Hub hub = new Hub("insteon.home", "user", "pass");
 
             // Create SwitchLinc controller from Insteon address 1D.D4.A7
             //  SwitchLinc switchLinc = hub.CreateSwitch(0x1DD4A7);
@@ -93,6 +65,6 @@ namespace InsteonBridge
             //// Dim
             //level = (await switchLinc.DimAsync()).Level.Value;
         }
+    }
 
-	}
 }

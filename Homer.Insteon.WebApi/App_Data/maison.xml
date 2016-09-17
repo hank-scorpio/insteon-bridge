@@ -3,30 +3,16 @@
 	<House Name="Maison">
 		<Controllers>
 			<Hub 	
+        Alias="hub"
 				Id="33.B5.82" 
 				Host="insteon.home" 
-				Username="Cartwrig" 
-				Password="SkUOemxQ" 
+				Username="--redacted--" 
+				Password="--redacted--" 
 				FirmwareVersion="1010"
 				Type="HUB2"
 			/>
 		</Controllers>
-    <Templates>
-      <LightType Name="led_philips" Levels="5,10,15,20,30,40,55,75" />
-      <LightType Name="led_spot" Levels="5,10,15,20,30,40,55,75" />
-      <LightType Name="inc" Levels="5,10,15,20,30,40,55,75" />
-      <LightType Name="hal_g9" Levels="5,10,15,20,30,40,55,75" />
-      <LightType Name="fan" Levels="" />
-    </Templates>
     <Devices>
-
-
-			<!-- <SmartLinc Host="192.168.88.40" />-->
-
-		
-			<!-- <Light Id="31.A7.D8" Name="arbre-noel" /> -->
-			<!-- <Light Id="22.8C.69" Name="passage-mur" /> -->
-
 		  <Zone Name="Cuisine">
 			  <Light Alias="il" Id="1D.BB.E6" Name="Ilot" Type="led" />
 			  <Light Alias="co" Id="1D.DC.A0" Name="Comptoir" Type="led" />
