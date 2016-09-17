@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Insteon>
+	<Network Name="home">
+		<Devices>
+			<SmartLinc Host="192.168.88.40" />
+			<!-- <Light Address="31.A7.D8" Name="arbre-noel" /> -->
+			<!-- <Light Address="22.8C.69" Name="passage-mur" /> -->
+
+			<Zone Name="cuisine">
+				<Light Address="1D.BB.E6" Name="ilot" />
+				<Light Address="1D.DC.A0" Name="comptoir" />
+				<Light Address="1D.D4.A7" Name="mur" />
+			</Zone>
+			<Zone Name="salon">
+				<Light Address="22.76.3C" Name="mur" />
+			</Zone>
+			<Zone Name="cour">
+				<Light Address="22.72.DB" Name="corniche" />
+			</Zone>
+			<Zone Name="passage">
+				<Light Address="1D.E4.BF" Name="plafond" />
+			</Zone>
+			<Zone Name="sdb">
+				<Light Address="1D.DD.C7" Name="plafond" />
+				<Light Address="17.92.C6" Name="fan" />
+			</Zone>
+			<Zone Name="bureau">
+				<Light Address="1D.DC.B1" Name="plafond" />
+			</Zone>
+		</Devices>
+	</Network>
+</Insteon>

@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Insteon>
+	<House Name="Maison">
+		<Controllers>
+			<Hub 	
+				Id="33.B5.82" 
+				Host="insteon.home" 
+				Username="Cartwrig" 
+				Password="SkUOemxQ" 
+				FirmwareVersion="1010"
+				Type="HUB2"
+			/>
+		</Controllers>
+    <Templates>
+      <LightType Name="led_philips" Levels="5,10,15,20,30,40,55,75" />
+      <LightType Name="led_spot" Levels="5,10,15,20,30,40,55,75" />
+      <LightType Name="inc" Levels="5,10,15,20,30,40,55,75" />
+      <LightType Name="hal_g9" Levels="5,10,15,20,30,40,55,75" />
+      <LightType Name="fan" Levels="" />
+    </Templates>
+    <Devices>
+
+
+			<!-- <SmartLinc Host="192.168.88.40" />-->
+
+		
+			<!-- <Light Id="31.A7.D8" Name="arbre-noel" /> -->
+			<!-- <Light Id="22.8C.69" Name="passage-mur" /> -->
+
+		  <Zone Name="Cuisine">
+			  <Light Alias="il" Id="1D.BB.E6" Name="Ilot" Type="led" />
+			  <Light Alias="co" Id="1D.DC.A0" Name="Comptoir" Type="led" />
+			  <Light Alias="sc" Id="1D.D4.A7" Name="Spots Cuisine" Type="led"/>
+		  </Zone>
+		  <Zone Name="Salon">
+			  <Light Alias="ss" Id="22.76.3C" Name="Spots Salon" Type="led" />
+		  </Zone>
+		  <Zone Name="Cour">
+			  <Light Alias="ex" Id="22.72.DB" Name="Extérieur" Type="incandescent" />
+		  </Zone>
+		  <Zone Name="Passage">
+			  <Light Alias="pa" Id="1D.E4.BF" Name="Passage" Type="led" />
+		  </Zone>
+		  <Zone Name="Salle de Bain">
+			  <Light Alias="to" Id="1D.DD.C7" Name="Salle de Bain" Type="incandescent"/>
+			  <Light Alias="ft" Id="17.92.C6" Name="Fan SDB"/>
+		  </Zone>
+		  <Zone Name="Bureau">
+			  <Light Alias="bu" Id="1D.DC.B1" Name="Bureau" Type="incandescent"/>
+		  </Zone>
+
+    </Devices>
+</House>
+</Insteon>

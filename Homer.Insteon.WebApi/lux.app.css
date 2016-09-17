@@ -1,0 +1,59 @@
+﻿
+.md-button
+{
+    background-color: rgba(0, 0, 0, 0.2); 
+    min-height:48px;
+}
+
+md-slider.md-dark-orange-theme .md-track.md-track-fill {
+    background-color:rgb(255, 134, 48);
+}
+
+md-slider.md-dark-orange-theme .md-thumb:after {
+   border-color: rgb(255, 134, 48);
+    background-color: rgb(255, 134, 48);
+}
+md-card md-card-actions:not(.layout-column) .md-button:not(.md-icon-button) 
+{
+    border-radius:0px;
+    border-left:rgba(255, 255, 255, 0.35) 1px  solid; 
+    margin:0px;
+}
+.on, .off                   
+{ 
+    background-color: rgba(0, 0, 0, 0.3); 
+    flex:2;
+}
+md-progress-linear.md-dark-orange-theme .md-container 
+{
+    background-color: rgba(0, 148, 255,0.4);
+}
+md-progress-linear.md-dark-orange-theme .md-bar {
+    background-color: rgb(0, 148, 255);
+}
+md-card md-card-title 
+{
+    padding:16px 16px 16px;
+}
+md-slider-container
+{
+    min-height:48px;
+    background-color: rgba(0, 0, 0, 0.25);
+    padding:0px 16px 0px 16px;
+}
+.light-name {
+    font-size: 30px;
+}
+.light-zone
+{
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.6);
+}
+.light-level
+{
+    font-size: 64px;
+    font-weight: 200;
+    letter-spacing: -.005em;
+    line-height: 64px;
+    color: rgba(255,255,255, 0.8);
+}
