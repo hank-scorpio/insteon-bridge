@@ -139,15 +139,11 @@
     <Compile Include="App_Start\Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\maison.xml">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="App_Data\maison.xml" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="img\1474121075_light-bulb.png" />
-    <Content Include="img\icons\off - Copie.svg" />
+    <Content Include="img\favicon.png" />
     <Content Include="img\icons\off.svg" />
-    <Content Include="img\icons\on - Copie.svg" />
     <Content Include="img\icons\on.svg" />
     <Content Include="img\icons\s1.svg" />
     <Content Include="img\icons\s2.svg" />
