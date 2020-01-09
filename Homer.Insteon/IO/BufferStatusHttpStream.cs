@@ -27,12 +27,12 @@ namespace Homer.Insteon
             : this(host, new NetworkCredential(username, password), port)
         {
         }
-		public BufferStatusHttpStream(string host, NetworkCredential credentials, int port = DefaultPort)
-		{
+        public BufferStatusHttpStream(string host, NetworkCredential credentials, int port = DefaultPort)
+        {
             Host = host;
             Port = port;
             Credentials = credentials;
-		}
+        }
 
 
         //Task<string> HttpPost(string url) 
@@ -42,11 +42,11 @@ namespace Homer.Insteon
 
         Task<T> HttpRequest<T>(Func<WebClient, Task<T>> request)
         {
-	        using (var c = new WebClient())
-	        {
-		        c.Credentials = Credentials; 
+            using (var c = new WebClient())
+            {
+                c.Credentials = Credentials; 
                 return request(c);
-	        }
+            }
         }
 
    

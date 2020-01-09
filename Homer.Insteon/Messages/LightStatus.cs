@@ -23,9 +23,9 @@ namespace Homer.Insteon
         public TimeSpan Age             => DateTime.Now - Timestamp;
 
         public override String ToString()
-		{
+        {
             if (!Succeeded) return "N/A";
-			if (IsOff) return "OFF";
+            if (IsOff) return "OFF";
             return $"{LevelPct:00%}";
         }
        

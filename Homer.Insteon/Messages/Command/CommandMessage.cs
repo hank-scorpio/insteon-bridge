@@ -32,10 +32,10 @@ namespace Homer.Insteon
             => Message.GetBytes(CommandReceived, Destination).ToArray();
 
         public T CreateResponse<T>(byte[] data)  where T : CommandResponse, new()
-		    => CreateResponse<T>(data?.Length == CommandResponse.Length ? OK : Invalid, data);
+            => CreateResponse<T>(data?.Length == CommandResponse.Length ? OK : Invalid, data);
 
-		public T CreateResponse<T>(SendMessageResult result, byte[] data = null)  where T : CommandResponse, new()
-		    => (T)new T().Initialize(this, result, data);
+        public T CreateResponse<T>(SendMessageResult result, byte[] data = null)  where T : CommandResponse, new()
+            => (T)new T().Initialize(this, result, data);
         
 
     }

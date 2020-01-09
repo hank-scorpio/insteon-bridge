@@ -15,11 +15,11 @@ namespace Homer.Insteon
 
         public const int DefaultPort = 9761;
 
-		public InsteonTcpStream(string host, int port = DefaultPort)
-		{
+        public InsteonTcpStream(string host, int port = DefaultPort)
+        {
             Host = host;
             Port = port;
-		}
+        }
 
         private TcpClient client;
 

@@ -10,18 +10,18 @@ using System.Threading.Tasks;
 
 namespace Homer.Insteon
 {
-	[StructLayout(LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Sequential)]
     public struct InsteonId : IEnumerable<byte>, IEquatable<InsteonId>,  IEquatable<string>, IEquatable<uint>
     {
-    	public static InsteonId Zero        { get; } = new InsteonId(0x00, 0x00, 0x00);
-    	public static InsteonId Broadcast 	{ get; } = new InsteonId(0xFF, 0xFF, 0xFF);
+        public static InsteonId Zero        { get; } = new InsteonId(0x00, 0x00, 0x00);
+        public static InsteonId Broadcast 	{ get; } = new InsteonId(0xFF, 0xFF, 0xFF);
 
         public uint Value { get; }
 
         public byte A1 => (byte)(Value >> 16);
         public byte A2 => (byte)(Value >> 8);
         public byte A3 => (byte)(Value);
-    	public byte[] Bytes => new[] { A1, A2, A3 };
+        public byte[] Bytes => new[] { A1, A2, A3 };
 
 
         #region GetValue
@@ -57,40 +57,40 @@ namespace Homer.Insteon
 
         public InsteonId(string s)
             : this(ParseValue(s))
-    	{ }
+        { }
 
         public InsteonId(InsteonId id) 
             : this(id.Value)
-    	{ }
+        { }
 
-    	#endregion
+        #endregion
     
 
-    	#region Cast Operators
+        #region Cast Operators
          
-    	public static implicit operator InsteonId(uint val)
-    	    => new InsteonId(val);
+        public static implicit operator InsteonId(uint val)
+            => new InsteonId(val);
 
         public static implicit operator InsteonId(Enum val)
-    	    => (InsteonId)Convert.ToUInt32(val);
+            => (InsteonId)Convert.ToUInt32(val);
 
         public static implicit operator InsteonId(ulong val)
-    	    => (InsteonId)(uint)val;
+            => (InsteonId)(uint)val;
 
         public static implicit operator InsteonId(long val)
-    	    => (InsteonId)(uint)val;
-    	
-    	public static implicit operator InsteonId(string val)
-    	    => Parse(val);
-    	
-    	public static implicit operator uint(InsteonId addr)
-    	    => addr.Value;
-    	
-    	public static implicit operator string(InsteonId addr)
-    	    => addr.ToString();
-    	
-    	public static implicit operator byte[](InsteonId addr)
-    	    => addr.Bytes;
+            => (InsteonId)(uint)val;
+        
+        public static implicit operator InsteonId(string val)
+            => Parse(val);
+        
+        public static implicit operator uint(InsteonId addr)
+            => addr.Value;
+        
+        public static implicit operator string(InsteonId addr)
+            => addr.ToString();
+        
+        public static implicit operator byte[](InsteonId addr)
+            => addr.Bytes;
 
         #endregion
 
@@ -141,57 +141,57 @@ namespace Homer.Insteon
          
         public string ToShortString()
             => ToString("");
-    	
-    	public string ToString(string delimiter = "-", string byteFormat = "X2")
-    	    => String.Join(delimiter, Bytes.Select(x => x.ToString(byteFormat)));
-    	
+        
+        public string ToString(string delimiter = "-", string byteFormat = "X2")
+            => String.Join(delimiter, Bytes.Select(x => x.ToString(byteFormat)));
+        
     
-    	#endregion
+        #endregion
         
 
-    	#region Object Overrides
+        #region Object Overrides
     
-    	public override string ToString()
-    	    => ToString(null);
+        public override string ToString()
+            => ToString(null);
     
-    	public override int GetHashCode()
-    	    => Value.GetHashCode();
-    	
-    	public override bool Equals(object obj)
-    	{
-    		if (obj is InsteonId)
+        public override int GetHashCode()
+            => Value.GetHashCode();
+        
+        public override bool Equals(object obj)
+        {
+            if (obj is InsteonId)
                 return Equals((InsteonId) obj);
             if (obj is uint || obj is long || obj is ulong)
                 return Equals((uint)obj);
-    		if (obj is string)
+            if (obj is string)
                 return Equals((string) obj);
 
-    		return false;
-    	}
+            return false;
+        }
     
-    	#endregion
+        #endregion
     
 
-    	#region IEquatable<T> Implementation
+        #region IEquatable<T> Implementation
     
-    	public bool Equals(string other)
-    	    => Equals(Parse(other));
+        public bool Equals(string other)
+            => Equals(Parse(other));
         public bool Equals(InsteonId other)
             => Equals(other.Value);
         public bool Equals(uint other)
-    	    => Value == other;
+            => Value == other;
 
-    	#endregion
+        #endregion
    
 
-    	#region IEnumerable<T> Implementation
+        #region IEnumerable<T> Implementation
     
-    	public IEnumerator<byte> GetEnumerator()
-    	    => (Bytes as IEnumerable<byte>).GetEnumerator();
+        public IEnumerator<byte> GetEnumerator()
+            => (Bytes as IEnumerable<byte>).GetEnumerator();
  
-    	IEnumerator IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
             => (Bytes as IEnumerable).GetEnumerator();
-    	
-    	#endregion
+        
+        #endregion
     }
 }

@@ -9,11 +9,11 @@ using System.Xml.Linq;
 
 namespace Homer.Insteon
 {
-	public class House
-	{
-		public string Name { get; }
-		public IEnumerable<SwitchLinc> Lights { get; }
-    	public IEnumerable<InsteonController> Controllers { get; }
+    public class House
+    {
+        public string Name { get; }
+        public IEnumerable<SwitchLinc> Lights { get; }
+        public IEnumerable<InsteonController> Controllers { get; }
 
         public House(XElement el)
         {
@@ -24,7 +24,7 @@ namespace Homer.Insteon
                 .Select(CreateController)
                 .ToArray();
 
-			Lights = el.Element("Devices")
+            Lights = el.Element("Devices")
                 .Elements("Zone")
                 .Elements()
                 .Select(x => CreateDevice(x, Controllers.FirstOrDefault()))
@@ -39,12 +39,12 @@ namespace Homer.Insteon
         #region XML Serialization
 
         public static House Load(string configFile = "insteon.xml")
-		    => new House(XDocument.Load(configFile).Root.Element(nameof(House)));
-		
+            => new House(XDocument.Load(configFile).Root.Element(nameof(House)));
+        
         public static InsteonController CreateController(XElement el)
-		{
+        {
             switch (el.Name.ToString())
-			{
+            {
                 case nameof(Hub):
                     return new Hub(
                         el.Attribute("Host").Value,
@@ -55,16 +55,16 @@ namespace Homer.Insteon
                 case nameof(SmartLinc):
                     return new SmartLinc(
                         el.Attribute("Host").Value);
-			}
+            }
             return null;
-		}
+        }
 
         public static InsteonDevice CreateDevice(XElement el, InsteonController c)
-		{
+        {
             switch (el.Name.ToString())
-			{
+            {
                 case nameof(SwitchLinc):
-				case "Light":
+                case "Light":
                     return new SwitchLinc(
                         c,
                         el.Attribute("Id")?.Value,
@@ -74,7 +74,7 @@ namespace Homer.Insteon
                         LightLevelCurve.GetByNameOrDefault(el.Attribute("Type")?.Value));
             }
             return null;
-		}
+        }
       
         #endregion
 

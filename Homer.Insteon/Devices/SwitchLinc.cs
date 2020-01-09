@@ -7,8 +7,8 @@ using System.Xml.Serialization;
 
 namespace Homer.Insteon
 {
-	public class SwitchLinc : InsteonDevice
-	{
+    public class SwitchLinc : InsteonDevice
+    {
         LightStatus status;
         public LightLevelCurve LevelCurve { get; }
 
@@ -23,9 +23,9 @@ namespace Homer.Insteon
 
         public SwitchLinc(InsteonController controller, InsteonId address, string name = null, string zone = null, string alias = null, LightLevelCurve levelCurve = null)
             : base(address, controller, name, zone, alias)
-    	{
+        {
             LevelCurve = levelCurve;
-    	}
+        }
 
         public override string ToString()
             => $"{base.ToString()} Level={status?.ToString() ?? "N/A"}";
@@ -51,5 +51,5 @@ namespace Homer.Insteon
             => Run(a => Controller.RampUp(a, durationMs));
         public Task<LightStatus> RampDown(int durationMs = 0) 
             => Run(a => Controller.RampDown(a, durationMs));
-	}
+    }
 }

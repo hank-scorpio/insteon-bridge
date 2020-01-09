@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace Homer.Insteon
 {
-	[Flags]
+    [Flags]
     public enum SendMessageResult : byte
     {
-		None			= 0x00,
+        None			= 0x00,
         Invalid         = 0x01,
-		OK				= 0x08,
+        OK				= 0x08,
         WriteException  = 0x11,
-		EchoInvalid		= 0x21,
+        EchoInvalid		= 0x21,
         ResponseInvalid	= 0x31,
-		ResponseNak		= 0x32,
+        ResponseNak		= 0x32,
         ResponseNull    = 0x33,
     }
 }

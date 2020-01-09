@@ -26,7 +26,7 @@ namespace Homer.Insteon
             : base(address?.Value ?? InsteonId.Zero, null, name)
         {
             Stream = stream;
-    	}
+        }
 
         #endregion
 
@@ -229,6 +229,6 @@ namespace Homer.Insteon
 
         #endregion
 
-	}
+    }
 
 }
