@@ -15,13 +15,11 @@ namespace Homer.Insteon
         public CommandMessage   Message { get; protected set; }
         public InsteonId        Source => Message.Destination;
 
-
-
-
-        public void Initialize(CommandMessage msg, SendMessageResult result, byte[] data = null)
+        public CommandResponse Initialize(CommandMessage msg, SendMessageResult result, byte[] data = null)
 		{
             Initialize(result, data);
 			Message = msg;
+            return this;
 		}
     }
 }

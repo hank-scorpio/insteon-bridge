@@ -54,7 +54,7 @@ namespace Homer.Insteon
         int bufferLen = 0;
         byte[] buffer = new byte[4096];
         int BytesAvailable => bufferLen - bufferPos;
-        
+       
         async Task<string> GetBufferStatus() 
             => XElement.Parse(await HttpGet("buffstatus.xml"))?.Element("BS")?.Value.Trim();
   

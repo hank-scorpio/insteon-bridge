@@ -22,7 +22,7 @@ namespace Homer.Insteon
 		GetLightStatus = 0x19,
 		SetLevel       = 0x21,
         RampOn         = 0x2E,
-        RampOff        = 0x2E,
+        RampOff        = 0x2F,
     
 	}
 

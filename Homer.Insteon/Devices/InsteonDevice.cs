@@ -25,7 +25,8 @@ namespace Homer.Insteon
             Alias = alias ?? Name;
     	}
 
-        public override string ToString() => $"{{{GetType().Name} Addr={Address} Name={Name}}}";
+        public override string ToString() 
+            => $"{{{GetType().Name} Addr={Address} Name={Name}}}";
 
     }
 }

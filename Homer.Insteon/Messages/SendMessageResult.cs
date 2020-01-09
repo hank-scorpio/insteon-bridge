@@ -14,17 +14,10 @@ namespace Homer.Insteon
 		None			= 0x00,
         Invalid         = 0x01,
 		OK				= 0x08,
-
         WriteException  = 0x11,
-
 		EchoInvalid		= 0x21,
-
-
         ResponseInvalid	= 0x31,
 		ResponseNak		= 0x32,
         ResponseNull    = 0x33,
-
-
-   
     }
 }

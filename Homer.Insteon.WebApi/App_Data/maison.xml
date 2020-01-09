@@ -6,8 +6,8 @@
         Alias="hub"
 				Id="33.B5.82" 
 				Host="insteon.home" 
-				Username=" " 
-				Password="--redacted--" 
+				Username="<username goes here>" 
+				Password="<password goes here>" 
 				FirmwareVersion="1010"
 				Type="HUB2"
 			/>

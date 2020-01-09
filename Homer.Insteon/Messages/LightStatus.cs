@@ -16,7 +16,7 @@ namespace Homer.Insteon
 
         public bool     IsFullOn        => Level == MaxLevel;
         public bool     IsOn            => Level > 0;
-        public bool     IsOff           => Level == 0;
+        public bool     IsOff           => !IsOn;
         public byte?    Level           => this[5];
         public byte?    AllLinkDelta    => this[4];
         public double   LevelPct        => Level.HasValue ? LevelToPct(Level.Value) : -1;

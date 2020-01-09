@@ -13,7 +13,7 @@ namespace Homer.Insteon.WebApi.Controllers
         static IEnumerable<SwitchLinc> Lights 
             => Insteon.House.Lights;
       
-        static SwitchLinc Light(string id)
+        static SwitchLinc Light(string id) 
             => Lights.FirstOrDefault(x => x.Address.ToShortString() == id || x.Alias == id);
 
         object ToJson(SwitchLinc l) 
@@ -23,6 +23,7 @@ namespace Homer.Insteon.WebApi.Controllers
                 l.Alias,
                 l.Zone,
                 l.Name,
+                Age = (int)l.Status.Age.TotalSeconds,
                 Level = (int)(l.Status.LevelPct * 100),
             };
 
@@ -33,7 +34,7 @@ namespace Homer.Insteon.WebApi.Controllers
         public object Get(string id)
             => ToJson(Light(id));
 
-        [HttpGet, Route("api/lights/{id}/~{level}")]
+        [HttpGet, Route("api/lights/{id}")]
         public async Task<object> SetLevel(string id, string level)
         {
             var light = Light(id);
@@ -46,7 +47,6 @@ namespace Homer.Insteon.WebApi.Controllers
                     case "s4":
                     case "s5":
                     case "s6":
-
                         await light.SetLevelStep(level[1] - '0', 7); break;
                     case "off":
                         await light.SetLevel(0); break;

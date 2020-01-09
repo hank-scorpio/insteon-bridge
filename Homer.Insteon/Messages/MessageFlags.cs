@@ -23,7 +23,6 @@ namespace Homer.Insteon
     	MaxHop3		= 0x03,	// bit 1+2
     	MaxHop2		= 0x02, // bit 2
     	MaxHop1		= 0x01, // bit 1
-    
     	None		= 0x00,
  
     }

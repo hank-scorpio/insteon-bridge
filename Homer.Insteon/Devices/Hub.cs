@@ -18,8 +18,8 @@ namespace Homer.Insteon
     {
         #region Constructors
 
-        public Hub(string host, string username, string password, InsteonId? address = null, string name = null)
-            : base(new BufferStatusHttpStream(host, username, password), address, name)
+        public Hub(string host, string username, string password, int port = BufferStatusHttpStream.DefaultPort, InsteonId? address = null, string name = null)
+            : base(new BufferStatusHttpStream(host, username, password, port), address, name)
         {
 
         }

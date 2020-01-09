@@ -10,14 +10,15 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
+using static Homer.Insteon.SendMessageResult;
 
 namespace Homer.Insteon
 {
     public class InsteonController : InsteonDevice, IDisposable
     {
-        AwaitableSynchronuousQueue  CommandsQueue   { get; } = new AwaitableSynchronuousQueue();
-        public InsteonControllerOptions Options     { get; } = InsteonControllerOptions.Default;
-        InsteonBridgeStream         Stream          { get; }
+        public InsteonControllerOptions         Options         { get; } = InsteonControllerOptions.Default;
+        private AwaitableSynchronuousQueue      CommandsQueue   { get; } = new AwaitableSynchronuousQueue();
+        private InsteonBridgeStream             Stream          { get; }
 
         #region Constructors
 
@@ -29,80 +30,90 @@ namespace Homer.Insteon
 
         #endregion
 
+
         #region [public] Dispose / Wait
 
-        public void Dispose()
-        {
-            CommandsQueue.Dispose();
-        }
-        public async Task Run()
-        {
-            await CommandsQueue.Wait();
-        }
+        public void Dispose() 
+            => CommandsQueue.Dispose();
+
+        public async Task Run() 
+            => await CommandsQueue.Wait();
 
         #endregion
-    
+
+
         #region [public] Light Switch Commands
-        
+
         public Task<LightStatus> GetStatus(InsteonId dst)
             => Send<LightStatus>(dst, Command.GetLightStatus);
+
         public Task<LightStatus> SetFullOn(InsteonId dst)
             => Send<LightStatus>(dst, Command.On);
+
         public Task<LightStatus> SetOff(InsteonId dst)
             => Send<LightStatus>(dst, Command.Off);
+
         public Task<LightStatus> SetFastOn(InsteonId dst)
             => Send<LightStatus>(dst, Command.FastOn);
+
         public Task<LightStatus> SetFastOff(InsteonId dst)
             => Send<LightStatus>(dst, Command.FastOff);
+
         public Task<LightStatus> Brighten(InsteonId dst)
             => Send<LightStatus>(dst, Command.Brighten);
+
         public Task<LightStatus> Dim(InsteonId dst)
             => Send<LightStatus>(dst, Command.Dim);
 
         public Task<LightStatus> SetLevelAsync(InsteonId dst, byte level)
             => Send<LightStatus>(dst, Command.SetLevel, level);
+
         public Task<LightStatus> SetLevelAsync(InsteonId dst, double pct)
             => SetLevelAsync(dst, LightStatus.PctToLevel(pct));
-  
+
         public Task<LightStatus> StartRampAsync(InsteonId dst, RampDirection dir)
             => Send<LightStatus>(dst, Command.RampStart, (byte)dir);
+
         public Task<LightStatus> StopRampAsync(InsteonId dst)
             => Send<LightStatus>(dst, Command.RampStop);
+
         public Task<LightStatus> RampUp(InsteonId dst, int durationMs = 0)
             => RampAsync(dst, RampDirection.Up, durationMs);
+
         public Task<LightStatus> RampDown(InsteonId dst, int durationMs = 0)
             => RampAsync(dst, RampDirection.Down, durationMs);
 
         public async Task<LightStatus> RampAsync(InsteonId dst, RampDirection dir, int durationMs = 0)
         {
             LightStatus s = await StartRampAsync(dst, dir);
-            if (durationMs <= 0) return s;
-            
-            await Task.Delay(durationMs);
-            return await StopRampAsync(dst);
+            if (durationMs > 0)
+            {
+                await Task.Delay(durationMs);
+                s = await StopRampAsync(dst); 
+            }
+            return s;
         }
         #endregion
+
 
         #region [public] Send
 
         public async Task<R> Send<R>(CommandMessage cmd) where R : CommandResponse, new()
             => await CommandsQueue.Enqueue(() => SendCommand<R>(cmd));
-       
+
         public Task<CommandResponse> Send(InsteonId dst, Command cmd, byte value = 0, MessageFlags flags = MessageFlags.Default)
             => Send<CommandResponse>(dst, cmd, value, flags);
 
         public Task<CommandResponse> Send(CommandMessage cmd)
             => Send<CommandResponse>(cmd);
 
-        public Task<R> Send<R>(InsteonId dst, Command cmd, byte value = 0, MessageFlags flags = MessageFlags.Default)
-            where R : CommandResponse, new()
+        public Task<R> Send<R>(InsteonId dst, Command cmd, byte value = 0, MessageFlags flags = MessageFlags.Default) where R : CommandResponse, new()
             => Send<R>(new CommandMessage(dst, cmd, value, flags));
 
         #endregion
 
-        #region [private] SendCommand
 
-        const SendMessageResult OK = SendMessageResult.OK;
+        #region [private] SendCommand
 
         R SendCommand<R>(CommandMessage cmd) where R : CommandResponse, new()
         {
@@ -133,14 +144,13 @@ namespace Homer.Insteon
         static R SendCommand<R>(InsteonBridgeStream stream, CommandMessage msg, InsteonControllerOptions opt) where R : CommandResponse, new()
         {
             int delay = opt.RetryStartDelayMs;
-            int retry = 0;
             int timeout = opt.TimeoutStartMs;
+            int retry = 0;
             SendMessageResult r = OK;
 
             while (retry++ < opt.MaxRetries)
             {
-                byte[] data;
-                if ((r = SendCommand(stream, msg, timeout, out data)) == OK)
+                if ((r = SendCommand(stream, msg, timeout, out byte[] data)) == OK)
                 {
                     return msg.CreateResponse<R>(data);
                 }
@@ -152,7 +162,6 @@ namespace Homer.Insteon
             
         }
 
-        
         static SendMessageResult SendCommand(InsteonBridgeStream stream, CommandMessage msg, int timeout, out byte[] data)
         {
             SendMessageResult r = WriteMessage(stream, msg.GetBytes, timeout);
@@ -164,35 +173,25 @@ namespace Homer.Insteon
             return ReadResponse(stream, msg.GetResponseHeaderBytes, timeout, CommandResponse.Length, out data);
         }
 
-        //static void Print(bool success, int retry, Stopwatch sw)
-        //    => Print(success ? "OK" : "FAIL", retry, sw, "\r\n");
-        //static void Print(int retry, Stopwatch sw, object msg)
-        //    => Print("".PadRight(retry, '>'), retry, sw, msg);
-        //static void Print(string status, int retry, Stopwatch sw, object msg)
-        //    => Console.Write($"\r {status,-6} ({sw.ElapsedMilliseconds,4:##00} ms / {retry} ) {msg}");
-
-
         #endregion
+
 
         #region [private] WriteMessage / ReadResponse
 
         static SendMessageResult WriteMessage(InsteonBridgeStream stream, byte[] msg, int timeout)
         {
             if (!stream.DiscardExisting() || !stream.Wri­teBytes(msg))
-                return SendMessageResult.WriteException;
+                return WriteException;
 
-            byte[] ack;
-            SendMessageResult r = ReadResponse(stream, msg, timeout, 1, out ack);
-    
+            SendMessageResult r = ReadResponse(stream, msg, timeout, 1, out byte[] ack);
+
             if (r != OK)
                 return r;
-            else if (ack?[0] != Message.ACK)
-                return SendMessageResult.EchoInvalid;
+            if (ack?[0] != Message.ACK)
+                return EchoInvalid;
 
             return OK;
         }
-
-
 
         static SendMessageResult ReadResponse(InsteonBridgeStream stream, byte[] msg, int timeout, int responseLen, out byte[] response)
         {
@@ -207,9 +206,9 @@ namespace Homer.Insteon
             response = stream.ReadBytes(responseLen, timeout);
 
             if (response == null)
-                return SendMessageResult.ResponseNull;
+                return ResponseNull;
             if (response.Length < responseLen)
-                return SendMessageResult.ResponseInvalid;
+                return ResponseInvalid;
 
             return OK;
         }
@@ -219,13 +218,11 @@ namespace Homer.Insteon
             byte[] rx = stream.ReadBytes(bytes.Length, timeout);
 
             if (rx?.Length == 0)
-                return SendMessageResult.ResponseNull;
-
+                return ResponseNull;
             if (rx[0] == Message.NAK)
-                return SendMessageResult.ResponseNak;
-
+                return ResponseNak;
             if (!Enumerable.SequenceEqual(bytes, rx))
-                return SendMessageResult.ResponseInvalid;
+                return ResponseInvalid;
       
             return OK;
         }

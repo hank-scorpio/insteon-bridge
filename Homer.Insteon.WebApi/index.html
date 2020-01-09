@@ -18,53 +18,53 @@
     <script src="js/lux.app.js"></script>
 
     <div layout layout-wrap ng-controller="HouseController" ng-cloak>
-        <div ng-repeat="l in Lights" flex-gt-md="33" flex-gt-sm="50" flex="100">
-            <!--md-theme="{{l." md-theme="dark-{{l.Level > 0 ? 'orange' : 'grey'}}" md-theme-watch-->
+        <div ng-repeat="l in Lights" 
+             flex-gt-md="33" 
+             flex-gt-sm="50" 
+             flex="100">
             <md-card style="background-color:hsl(27, {{(l.Level > 0 ? 20 : 0) + (l.Level*0.6) | number: 0}}%, {{l.Level / 100 *15 + 31 | number: 0}}%);" md-theme="dark-{{l.Level > 0 ? 'orange' : 'grey'}}" md-theme-watch>
-
-                <!-- Info + Status -->
+                <!-- Name/Zone -->
                 <md-card-title>
                     <md-card-title-text>
-                        <span class="light-name">{{l.Name}} </span>
+                        <span class="light-name">{{l.Name}}</span>
                         <span class="light-zone">{{l.Zone}}</span>
                     </md-card-title-text>
-
+                    <!-- Level -->
                     <md-card-title-media class="light-level">
                         <div ng-if="l.Level >= 100">ON</div>
                         <div ng-if="l.Level <= 0">OFF</div>
-                        <div ng-if="l.Level > 0 && l.Level < 100">{{l.Level}}<small>%</small></div>
+                        <div ng-if="l.Level > 0 && l.Level < 100">
+                            {{l.Level}}
+                            <small>%</small>
+                        </div>
                     </md-card-title-media>
                 </md-card-title>
-
-
                 <!-- Level Slider -->
                 <md-slider-container>
-                    <md-slider min="0" max="100"
-                            ng-model="l.Level"
-                            ng-disabled="l.Loading"
-                            ng-change="SetLevel(l.Id, l.Level);">
+                    <md-slider min="0" max="100" 
+                               ng-model="l.Level" 
+                               ng-disabled="l.Loading" 
+                               ng-change="SetLevel(l.Id, l.Level);">
                     </md-slider>
                 </md-slider-container>
-                <md-progress-linear style="min-height:5px;z-index:1;"
-                                    md-mode="indeterminate"
+                <!-- Loading Bar -->
+                <md-progress-linear style="min-height:5px;z-index:1;" 
+                                    md-mode="indeterminate" 
                                     ng-disabled="!l.Loading">
-
                 </md-progress-linear>
                 <!-- Buttons -->
                 <md-card-actions layout layout-fill>
                     <md-button flex aria-label="{{cmd}}"
-                            ng-repeat="cmd in ['off','s1','s2','s3','s4','s5','s6','on']"
-                            ng-click="SetLevel(l.Id, cmd);"
-                            ng-disabled="l.Loading"
+                               ng-repeat="cmd in ['off','s1','s2','s3','s4','s5','s6','on']"
+                               ng-click="SetLevel(l.Id, cmd);"
+                               ng-disabled="l.Loading"
                                ng-class="cmd">
-                        <md-icon md-svg-icon="img/icons/{{cmd}}.svg" ></md-icon>
+                        <md-icon md-svg-icon="img/icons/{{cmd}}.svg">
+                        </md-icon>
                     </md-button>
-
                 </md-card-actions>
             </md-card>
         </div>
-
     </div>
-
 </body>
 </html>

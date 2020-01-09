@@ -8,24 +8,24 @@ namespace Homer.Insteon
 {
     public class AwaitableSynchronuousQueue : IDisposable
     {
-        Task consumer = null;
-        readonly BlockingCollection<Task> queue = new BlockingCollection<Task>();
-        readonly CancellationTokenSource cancellation = new CancellationTokenSource();
+        private Task consumer = null;
+
+        BlockingCollection<Task>    Queue           { get; } = new BlockingCollection<Task>();
+        CancellationTokenSource     Cancellation    { get; } = new CancellationTokenSource();
 
         void EnsureConsumerInitialized()
-        {
-            if (consumer != null) return;
-            consumer = new Task(ConsumeUntilCancelled, cancellation.Token, TaskCreationOptions.LongRunning);
-            consumer.Start();
-        }
+            => LazyInitializer.EnsureInitialized(ref consumer, InitializeConsumer);
+
+        Task InitializeConsumer()
+            => Task.Factory.StartNew(ConsumeUntilCancelled, Cancellation.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
 
         void ConsumeUntilCancelled()
         {
             try
             {
-                foreach (Task t in queue.GetConsumingEnumerable(cancellation.Token))
+                foreach (Task task in Queue.GetConsumingEnumerable(Cancellation.Token))
                 { 
-                    t.RunSynchronously();
+                    task.RunSynchronously();
                 }
             }
             catch (OperationCanceledException) { }
@@ -34,25 +34,21 @@ namespace Homer.Insteon
         public Task<R> Enqueue<R>(Func<R> fn)
         {
             EnsureConsumerInitialized();
-            var task = new Task<R>(fn, cancellation.Token);
-            queue.Add(task);
+            Task<R> task = new Task<R>(fn, Cancellation.Token);
+            Queue.Add(task);
             return task;
         }
 
-        public async Task Wait()
-        {
-            await consumer;
-        }
+        public async Task Wait() 
+            => await consumer;
 
         public void Cancel()
         {
-            if (cancellation.IsCancellationRequested) return;
-            cancellation.Cancel();
+            if (Cancellation.IsCancellationRequested) return;
+            Cancellation.Cancel();
         }
 
-        public void Dispose()
-        {
-            Cancel();
-        }
+        public void Dispose() 
+            => Cancel();
     }
 }

@@ -17,7 +17,6 @@ namespace Homer.Insteon
 		public const int  END  = -1;
 
         public static IEnumerable<byte> GetBytes(MessageType type, InsteonId dst, params object[] bytes)
-            => new[] { STX, (byte)type, dst.A1, dst.A2, dst.A3 }
-                .Concat(bytes.Select(Convert.ToByte));
+            => new[] { STX, (byte)type, dst.A1, dst.A2, dst.A3 }.Concat(bytes.Select(Convert.ToByte));
 	}
 }

@@ -32,12 +32,11 @@ namespace Homer.Insteon
                 .ToArray();
         }
 
-
         public async Task UpdateAll()
             => await Task.WhenAll(Lights.Select(l => l.GetStatus()));
 
-        #region XML Serialization
 
+        #region XML Serialization
 
         public static House Load(string configFile = "insteon.xml")
 		    => new House(XDocument.Load(configFile).Root.Element(nameof(House)));
@@ -48,10 +47,12 @@ namespace Homer.Insteon
 			{
                 case nameof(Hub):
                     return new Hub(
-                        el.Attribute("Host").Value, 
+                        el.Attribute("Host").Value,
                         el.Attribute("Username").Value,
-                        el.Attribute("Password").Value);
-				case nameof(SmartLinc):
+                        el.Attribute("Password").Value,
+                        int.Parse(el.Attributes("Port").SingleOrDefault() ?.Value.ToString() ?? $"{BufferStatusHttpStream.DefaultPort}"));
+
+                case nameof(SmartLinc):
                     return new SmartLinc(
                         el.Attribute("Host").Value);
 			}
@@ -76,5 +77,7 @@ namespace Homer.Insteon
 		}
       
         #endregion
+
+
     }
 }

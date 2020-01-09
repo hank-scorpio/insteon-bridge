@@ -19,7 +19,7 @@ namespace Homer.Insteon
         #region Constructors
 
         public SmartLinc(string host, InsteonId? address = null, string name = null)
-            : base(new InsteonTelnetStream(host), address, name)
+            : base(new InsteonTcpStream(host), address, name)
         {
 
         }

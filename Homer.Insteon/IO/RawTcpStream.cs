@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace Homer.Insteon
 {
-    public class InsteonTelnetStream : InsteonBridgeStream
+    public class InsteonTcpStream : InsteonBridgeStream
     {
         public string Host { get; protected set; }
         public int Port { get; protected set; }
 
         public const int DefaultPort = 9761;
 
-		public InsteonTelnetStream(string host, int port = DefaultPort)
+		public InsteonTcpStream(string host, int port = DefaultPort)
 		{
             Host = host;
             Port = port;

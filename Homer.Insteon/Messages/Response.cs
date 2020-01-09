@@ -1,33 +1,29 @@
 using System;
+using static Homer.Insteon.SendMessageResult;
 
 namespace Homer.Insteon
 {
     public class Response
     {
-        const string AlreadyInitializedMessage = "Already initialized; Initialize() cannot be called more than once.";
-        const SendMessageResult OK = SendMessageResult.OK;
+        public SendMessageResult Result { get; protected set; }
+        public bool Initialized { get; protected set; }
 
-
-        public SendMessageResult    Result          { get; protected set; }
-        public bool                 Succeeded       => Result == OK;
-        protected byte[]            ResponseBytes;
+        protected byte[] ResponseBytes { get; set; }
 
         protected byte? this[int index] 
             => ResponseBytes?[index];
 
-
-        bool initialized = false;
+        public bool Succeeded
+            => Result == OK;
 
         public void Initialize(SendMessageResult result, byte[] data = null)
         {
-            if (initialized)
-                throw new InvalidOperationException(AlreadyInitializedMessage);
+            if (Initialized)
+                throw new InvalidOperationException("Already initialized; Initialize() cannot be called more than once.");
 
-            if ((Result = result) == OK)
-            {
-                ResponseBytes = data;
-            }
-            initialized = true;
+            Result = result;
+            ResponseBytes = result == OK ? data : null;
+            Initialized = true;
         }
 
 
